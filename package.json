@@ -1,7 +1,7 @@
 {
   "name": "dynamodb-queue-source",
   "version": "0.0.1",
-  "description": "Helps manages interactions with AWS DynamoDb",
+  "description": "Helps manage interactions with AWS DynamoDb",
   "main": "dynamoDbQueueSource.js",
   "preferGlobal": true,
   "author": "Cascade Energy, Inc.",
