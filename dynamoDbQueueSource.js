@@ -44,7 +44,7 @@ dynamoDbQueueSource._executeQueryTask = function(queryTask) {
 dynamoDbQueueSource._isRunning = function(scanTask) {
   return (
     !scanTask.error &&
-    (scanTask.queue.length > 0 || scanTask.hasMoreItems)
+    (!scanTask.queue.idle() || scanTask.hasMoreItems)
   );
 };
 
