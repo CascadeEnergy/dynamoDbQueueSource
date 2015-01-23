@@ -1,11 +1,8 @@
 'use strict';
 
 var _ = require('lodash');
-var AWS = require('aws-sdk');
 
-module.exports = function() {
-  var dynamoDb = new AWS.DynamoDB();
-
+module.exports = function(dynamoDb) {
   var dynamoDbQueueSource = { };
 
   dynamoDbQueueSource._processResult = function(err, data, task) {
@@ -17,7 +14,8 @@ module.exports = function() {
       return;
     }
 
-    // Push the items from the scan into the queue and update the total item count
+    // Push the items from the scan into the queue and update the total item
+    // count
     task.queue.push(data.Items);
     task.results.itemCount += data.Items.length;
 
@@ -49,7 +47,12 @@ module.exports = function() {
     );
   };
 
-  dynamoDbQueueSource._createTask = function(queue, options, callback, executor) {
+  dynamoDbQueueSource._createTask = function(
+    queue,
+    options,
+    callback,
+    executor
+  ) {
     var task = {
       queue: queue,
       options: options,
