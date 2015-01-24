@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "description": "Helps manage interactions with AWS DynamoDb",
   "main": "dynamoDbQueueSource.js",
-  "preferGlobal": true,
   "author": "Cascade Energy, Inc.",
   "license": "MIT",
   "repository": {
