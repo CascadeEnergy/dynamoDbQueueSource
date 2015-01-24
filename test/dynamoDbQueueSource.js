@@ -8,13 +8,12 @@ var sinon = require('sinon');
 var should = require('should');
 
 describe('Library: Location Queue Source', function() {
-  var aws;
   var dynamoDb;
   var dynamoDbQueueSource;
+  var dynamoDbQueueSourceFactory;
   var lodash;
 
   beforeEach(function() {
-    aws = { DynamoDB: sinon.stub() };
     dynamoDb = { query: sinon.stub(), scan: sinon.stub() };
     lodash = {
       identity: sinon.spy(),
@@ -22,15 +21,14 @@ describe('Library: Location Queue Source', function() {
       partialRight: sinon.stub()
     };
 
-    aws.DynamoDB.returns(dynamoDb);
-
-    dynamoDbQueueSource = proxyquire(
+    dynamoDbQueueSourceFactory = proxyquire(
       '../dynamoDbQueueSource.js',
       {
-        'aws-sdk': aws,
         lodash: lodash
       }
     );
+
+    dynamoDbQueueSource = dynamoDbQueueSourceFactory(dynamoDb);
   });
 
   describe('Query / Scan interface', function() {
@@ -248,25 +246,28 @@ describe('Library: Location Queue Source', function() {
   });
 
   describe('_isRunning', function() {
-    it('should return true if the queue has items', function() {
-      var scanTask = { queue: [ 1, 2, 3 ], hasMoreItems: false };
+    it('should return true if the queue is not idle', function() {
+      var scanTask = { queue: { idle: sinon.stub() }, hasMoreItems: false };
+      scanTask.queue.idle.returns(false);
 
       dynamoDbQueueSource._isRunning(scanTask).should.be.true;
     });
 
     it('should return true if scanning has not finished', function() {
-      var scanTask = { queue: [ ], hasMoreItems: true };
+      var scanTask = { queue: { idle: sinon.stub() }, hasMoreItems: true };
+      scanTask.queue.idle.returns(true);
 
       dynamoDbQueueSource._isRunning(scanTask).should.be.true;
     });
 
     it(
-      'should return false if scanning has finished and the queue is empty',
+      'should return false if scanning has finished and the queue is idle',
       function() {
         var scanTask = {
           hasMoreItems: false,
-          queue: [ ]
+          queue: { idle: sinon.stub() }
         };
+        scanTask.queue.idle.returns(true);
 
         dynamoDbQueueSource._isRunning(scanTask).should.be.false;
       }
