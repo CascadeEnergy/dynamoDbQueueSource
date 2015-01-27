@@ -1,0 +1,28 @@
+{
+  "name": "dynamodb-queue-source",
+  "version": "0.0.1",
+  "description": "Helps manages interactions with AWS DynamoDb",
+  "main": "dynamoDbQueueSource.js",
+  "preferGlobal": true,
+  "author": "Cascade Energy, Inc.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:CascadeEnergy/dynamoDbQueueSource.git"
+  },
+  "scripts": {
+    "test": "gulp test"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1.4",
+    "lodash": "^2.4.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.10",
+    "gulp-istanbul": "^0.5.0",
+    "gulp-mocha": "^2.0.0",
+    "proxyquire": "^1.3.0",
+    "should": "^4.4.2",
+    "sinon": "^1.12.2"
+  }
+}
