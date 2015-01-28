@@ -8,10 +8,13 @@ gulp.task('test', function (cb) {
   gulp.src(['dynamoDbQueueSource.js'])
     .pipe(gulpIstanbul())
     .pipe(gulpIstanbul.hookRequire())
-    .on('finish', function () {
-          gulp.src(['test/**/*.js'])
-            .pipe(gulpMocha())
-            .pipe(gulpIstanbul.writeReports())
-            .on('end', cb);
-        });
+    .on(
+      'finish',
+      function () {
+        gulp.src(['test/**/*.js'])
+          .pipe(gulpMocha())
+          .pipe(gulpIstanbul.writeReports())
+          .on('end', cb);
+      }
+    );
 });
